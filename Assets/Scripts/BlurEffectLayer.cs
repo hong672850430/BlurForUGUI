@@ -141,7 +141,10 @@ public class BlurEffectLayer : MonoBehaviour
             if (m_isRuntimeBlur)
             {
                 //清空renderBuffer
-                RenderTexture.ReleaseTemporary(renderBuffer);
+                if (null != renderBuffer)
+                {
+                    RenderTexture.ReleaseTemporary(renderBuffer);
+                }
             }
             else
             {
@@ -175,6 +178,7 @@ public class BlurEffectLayer : MonoBehaviour
             m_rawImage.color = new Color(m_rawImage.color.r, m_rawImage.color.g, m_rawImage.color.b, 0);
         }
     }
+
     void OnDestroy()
     {
         if (CurMaterial)
@@ -183,10 +187,16 @@ public class BlurEffectLayer : MonoBehaviour
             DestroyImmediate(CurMaterial);
         }
 
-        if (renderBuffer != null || m_rawImage.texture != null)
+        if (!m_isRuntimeBlur)
         {
-            RenderTexture.ReleaseTemporary(renderBuffer);
+            if (renderBuffer != null || m_rawImage.texture != null)
+            {
+                RenderTexture.ReleaseTemporary(renderBuffer);
+                renderBuffer = null;
+                m_rawImage.texture = null;
+            }
         }
+
     }
 
 

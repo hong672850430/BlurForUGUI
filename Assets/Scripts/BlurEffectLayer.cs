@@ -97,7 +97,7 @@ public class BlurEffectLayer : MonoBehaviour
 
             // 【1】处理Shader的通道0，用于降采样 ||Pass 0,for down sample
             //准备一个缓存renderBuffer，用于准备存放最终数据
-            renderBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, RenderTextureFormat.ARGB32); //sourceTexture.format
+            renderBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, RenderTextureFormat.RGB111110Float); //sourceTexture.format
             //设置渲染模式：双线性
             renderBuffer.filterMode = FilterMode.Bilinear;
             //拷贝sourceTexture中的渲染数据到renderBuffer,并仅绘制指定的pass0的纹理数据
@@ -114,7 +114,7 @@ public class BlurEffectLayer : MonoBehaviour
 
                 // 【2.2】处理Shader的通道1，垂直方向模糊处理 || Pass1,for vertical blur
                 // 定义一个临时渲染的缓存tempBuffer
-                RenderTexture tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
+                RenderTexture tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, RenderTextureFormat.RGB111110Float); //sourceTexture.format
                 // 拷贝renderBuffer中的渲染数据到tempBuffer,并仅绘制指定的pass1的纹理数据
                 Graphics.Blit(renderBuffer, tempBuffer, material, 1);
                 //  清空renderBuffer
@@ -124,7 +124,7 @@ public class BlurEffectLayer : MonoBehaviour
 
                 // 【2.3】处理Shader的通道2，竖直方向模糊处理 || Pass2,for horizontal blur
                 // 获取临时渲染纹理
-                tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, sourceTexture.format);
+                tempBuffer = RenderTexture.GetTemporary(renderWidth, renderHeight, 0, RenderTextureFormat.RGB111110Float); //sourceTexture.format
                 // 拷贝renderBuffer中的渲染数据到tempBuffer,并仅绘制指定的pass2的纹理数据
                 Graphics.Blit(renderBuffer, tempBuffer, material, 2);
 
